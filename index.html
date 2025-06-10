@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>친구의 마음 헤아리기: 3단계 컨설팅 완전판</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        
+        /* 6가지 다양한 템플릿 - 3단계 그라디언트 */
+        .card-template-pastel { 
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%);
+        }
+        .card-template-nature { 
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #d299c2 100%);
+        }
+        .card-template-sky { 
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 50%, #a855f7 100%);
+        }
+        .card-template-sunset {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+        }
+        .card-template-ocean {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        }
+        .card-template-forest {
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 50%, #093637 100%);
+        }
+        
+        .encouragement-messages {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .card-shadow { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); }
+        .text-shadow { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); }
+        .backdrop-blur { backdrop-filter: blur(5px); }
+        
+        .dynamic-message-box {
+            min-height: 60px;
+            max-height: 150px;
+            transition: all 0.3s ease;
+        }
+        
+        .text-color-white { color: #ffffff; }
+        .text-color-cream { color: #fef7ed; }
+        .text-color-light-blue { color: #dbeafe; }
+        .text-color-light-pink { color: #fce7f3; }
+        .text-color-light-green { color: #d1fae5; }
+    </style>
+</head>
+<body class="bg-green-50 flex justify-center items-start min-h-screen p-4 sm:p-8">
+    <div class="w-full max-w-6xl mx-auto">
+        <div id="main-container">
+            <!-- 메인 헤더 -->
+            <header class="text-center p-6 bg-white rounded-xl shadow-lg mb-8">
+                <h1 class="text-3xl font-bold text-green-800">활동지 2: 친구의 마음 헤아리기</h1>
+                <h2 class="text-xl text-green-600 mt-2">'동료 컨설턴트' 3단계 실전 연습</h2>
+                <p class="text-gray-600 mt-2">다양한 고민 사례를 통해 공감하고 도움을 제안한 후, 따뜻한 격려 카드를 만들어 봅시다.</p>
+            </header>
+
+            <!-- 시작 화면 -->
+            <div id="start-screen" class="bg-white p-8 rounded-xl shadow-lg text-center">
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">🎯 컨설턴트 되기 준비</h3>
+                    <p class="text-gray-600 mb-6">친구들의 다양한 고민을 듣고, 따뜻한 마음으로 도움을 주는 연습을 해보세요.<br>
+                    총 <span class="font-bold text-green-600">90가지</span>의 실제 고민 사례가 준비되어 있습니다!</p>
+                    
+                    <div class="bg-yellow-50 p-4 rounded-lg mb-6">
+                        <h4 class="font-bold text-yellow-800 mb-2">🆕 새로워진 3단계 컨설팅</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                            <div class="bg-green-100 p-3 rounded-lg">
+                                <span class="font-bold text-green-700">1단계</span><br>
+                                💚 마음 공감하기
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-lg">
+                                <span class="font-bold text-blue-700">2단계</span><br>
+                                🎯 도움 제안하기
+                            </div>
+                            <div class="bg-purple-100 p-3 rounded-lg">
+                                <span class="font-bold text-purple-700">3단계</span><br>
+                                🎁 격려 카드 만들기
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-b pb-6 mb-6">
+                    <h4 class="text-lg font-bold text-gray-800 mb-4">컨설턴트 정보</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label for="grade" class="block font-semibold text-gray-700">학년</label>
+                            <input type="text" id="grade" class="mt-1 w-full p-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label for="class" class="block font-semibold text-gray-700">반</label>
+                            <input type="text" id="class" class="mt-1 w-full p-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label for="name" class="block font-semibold text-gray-700">이름</label>
+                            <input type="text" id="name" class="mt-1 w-full p-2 border border-gray-300 rounded-lg">
+                        </div>
+                    </div>
+                </div>
+
+                <button id="start-consulting-btn" class="px-10 py-4 bg-green-600 text-white font-bold text-lg rounded-lg hover:bg-green-700 transition">
+                    🚀 컨설팅 시작하기
+                </button>
+            </div>
+
+            <!-- 1,2단계: 컨설팅 화면 -->
+            <div id="consulting-screen" class="hidden">
+                <div class="bg-white p-8 rounded-xl shadow-lg mb-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl font-bold text-green-700">💬 친구의 고민을 들어보세요</h3>
+                        <button id="new-case-btn" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                            🔄 다른 고민 보기
+                        </button>
+                    </div>
+                    
+                    <div id="case-display" class="bg-gray-50 p-6 rounded-lg mb-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="text-4xl">😟</div>
+                            <div class="flex-1">
+                                <h4 class="font-bold text-lg text-gray-800 mb-2" id="case-title">고민 제목</h4>
+                                <p class="text-gray-700 leading-relaxed" id="case-content">고민 내용이 여기에 표시됩니다...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="consulting-form" class="space-y-6">
+                        <div class="p-4 bg-green-50 rounded-lg">
+                            <label for="empathy" class="text-xl font-bold text-green-700">[1단계] 마음 공감하기 💚</label>
+                            <p class="text-sm text-gray-600 mb-3">친구의 상황과 감정을 이해하고, 따뜻한 공감의 말을 적어보세요.</p>
+                            <textarea id="empathy" rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400" placeholder="예: 정말 속상했겠구나. 그런 상황이면 나도 비슷하게 느꼈을 것 같아. 혼자 고민하느라 힘들었을 텐데..."></textarea>
+                        </div>
+                        
+                        <div class="p-4 bg-blue-50 rounded-lg">
+                            <label for="suggestion" class="text-xl font-bold text-blue-700">[2단계] 도움 제안하기 🎯</label>
+                            <p class="text-sm text-gray-600 mb-3">비난이나 섣부른 충고 대신, 실질적이고 구체적인 도움 방법을 제안해보세요.</p>
+                            <textarea id="suggestion" rows="5" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400" placeholder="예: 우선 선생님께 상황을 말씀드려보는 건 어떨까? 그리고 내가 함께 가서 도와줄 수도 있어. 혹시 다른 해결 방법도 같이 생각해볼까?"></textarea>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="button" id="next-to-card-btn" class="px-10 py-4 bg-purple-600 text-white font-bold text-lg rounded-lg hover:bg-purple-700 transition">
+                                ➡️ 3단계: 격려 카드 만들기
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 3단계: 격려 카드 만들기 화면 -->
+            <div id="card-making-screen" class="hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- 왼쪽: 카드 설정 -->
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-purple-700 mb-6">[3단계] 격려 카드 만들기 🎁</h3>
+                        
+                        <!-- 격려 메시지 뽑기 -->
+                        <div class="mb-6 p-4 bg-purple-50 rounded-lg">
+                            <h4 class="font-bold text-purple-700 mb-3">✨ 격려 메시지 뽑기</h4>
+                            <div class="text-center mb-4">
+                                <button id="draw-message-btn" class="bg-purple-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-purple-600 transition">
+                                    🎲 메시지 뽑기
+                                </button>
+                            </div>
+                            <div id="drawn-message" class="bg-white p-3 rounded-lg text-center min-h-[3rem] flex items-center justify-center text-purple-700 font-medium">
+                                버튼을 눌러 격려 메시지를 뽑아보세요!
+                            </div>
+                            <button id="add-message-btn" class="hidden mt-3 w-full bg-green-500 text-white font-bold py-2 rounded-lg hover:bg-green-600 transition">
+                                ➕ 이 메시지 추가하기
+                            </button>
+                        </div>
+
+                        <!-- 선택된 메시지들 -->
+                        <div class="mb-6">
+                            <h4 class="font-bold text-gray-700 mb-3">📝 선택된 격려 메시지들 <span class="text-sm text-gray-500">(최대 4개)</span></h4>
+                            <div id="selected-messages" class="encouragement-messages space-y-2">
+                                <!-- 동적으로 추가될 메시지들 -->
+                            </div>
+                        </div>
+
+                        <!-- 카드 설정 -->
+                        <div class="grid grid-cols-1 gap-4 mb-6">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="card-to" class="block font-semibold text-gray-700 mb-2">받는 사람:</label>
+                                    <input type="text" id="card-to" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="고민 상담자">
+                                </div>
+                                <div>
+                                    <label for="card-from" class="block font-semibold text-gray-700 mb-2">보내는 사람:</label>
+                                    <input type="text" id="card-from" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="나">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 배경 이미지 업로드 -->
+                        <div class="mb-6">
+                            <h4 class="font-bold text-gray-700 mb-3">🖼️ 배경 이미지 (선택사항)</h4>
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-purple-400 transition">
+                                <input type="file" id="background-upload" accept="image/*" class="hidden">
+                                <button id="upload-background-btn" class="w-full">
+                                    <div id="upload-placeholder" class="text-gray-500">
+                                        <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                        </svg>
+                                        <p class="text-sm">클릭해서 배경 이미지 선택</p>
+                                    </div>
+                                    <div id="background-preview" class="hidden">
+                                        <img id="background-img" class="w-full h-20 object-cover rounded">
+                                        <p class="text-xs text-gray-500 mt-1">배경 이미지 선택됨</p>
+                                    </div>
+                                </button>
+                            </div>
+                            <button id="remove-background-btn" class="hidden mt-2 text-red-500 text-sm hover:text-red-700">
+                                ✕ 배경 이미지 제거
+                            </button>
+                        </div>
+
+                        <!-- 템플릿 선택 -->
+                        <div class="mb-6">
+                            <h4 class="font-bold text-gray-700 mb-3">🎨 카드 템플릿 선택</h4>
+                            <div class="grid grid-cols-3 gap-3 mb-4">
+                                <button class="template-btn h-16 rounded-lg border-2 border-purple-400 card-template-pastel text-xs font-medium text-gray-700 bg-purple-100" data-template="pastel">
+                                    따뜻한 파스텔
+                                </button>
+                                <button class="template-btn h-16 rounded-lg border-2 border-gray-300 card-template-nature text-xs font-medium text-gray-700 hover:border-purple-400" data-template="nature">
+                                    자연 그린
+                                </button>
+                                <button class="template-btn h-16 rounded-lg border-2 border-gray-300 card-template-sky text-xs font-medium text-gray-700 hover:border-purple-400" data-template="sky">
+                                    하늘 블루
+                                </button>
+                                <button class="template-btn h-16 rounded-lg border-2 border-gray-300 card-template-sunset text-xs font-medium text-gray-700 hover:border-purple-400" data-template="sunset">
+                                    석양 핑크
+                                </button>
+                                <button class="template-btn h-16 rounded-lg border-2 border-gray-300 card-template-ocean text-xs font-medium text-gray-700 hover:border-purple-400" data-template="ocean">
+                                    신비한 바다
+                                </button>
+                                <button class="template-btn h-16 rounded-lg border-2 border-gray-300 card-template-forest text-xs font-medium text-gray-700 hover:border-purple-400" data-template="forest">
+                                    깊은 숲
+                                </button>
+                            </div>
+                            
+                            <!-- 글자색 선택 -->
+                            <div class="mt-4">
+                                <label class="block font-semibold text-gray-700 mb-2">✨ 글자색 선택:</label>
+                                <div class="flex gap-2">
+                                    <button class="text-color-btn w-8 h-8 rounded-full border-2 border-white bg-white shadow-md ring-4 ring-purple-400" data-color="white" style="background: #ffffff;" title="흰색"></button>
+                                    <button class="text-color-btn w-8 h-8 rounded-full border-2 border-gray-300 shadow-md" data-color="cream" style="background: #fef7ed;" title="크림색"></button>
+                                    <button class="text-color-btn w-8 h-8 rounded-full border-2 border-gray-300 shadow-md" data-color="light-blue" style="background: #dbeafe;" title="연한 파랑"></button>
+                                    <button class="text-color-btn w-8 h-8 rounded-full border-2 border-gray-300 shadow-md" data-color="light-pink" style="background: #fce7f3;" title="연한 핑크"></button>
+                                    <button class="text-color-btn w-8 h-8 rounded-full border-2 border-gray-300 shadow-md" data-color="light-green" style="background: #d1fae5;" title="연한 초록"></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 직접 입력 메시지 -->
+                        <div class="mb-6">
+                            <label for="custom-message" class="block font-semibold text-gray-700 mb-2">💌 나만의 특별한 메시지:</label>
+                            <textarea id="custom-message" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-400" placeholder="친구에게 전하고 싶은 특별한 격려 메시지를 직접 써보세요..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 오른쪽: 카드 미리보기 -->
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h4 class="text-xl font-bold text-gray-700 mb-4 text-center">🖼️ 카드 미리보기</h4>
+                        
+                        <!-- Canvas for card generation -->
+                        <canvas id="card-canvas" width="600" height="400" class="hidden"></canvas>
+                        
+                        <div id="card-preview" class="card-preview card-template-pastel rounded-lg relative overflow-hidden card-shadow" style="width: 100%; height: 400px;">
+                            <!-- 배경 이미지 또는 그라디언트 -->
+                            <div id="card-background" class="absolute inset-0 bg-gradient-to-br from-orange-200 via-pink-200 to-yellow-200"></div>
+                            
+                            <!-- 오버레이 for 가독성 -->
+                            <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+                            
+                            <!-- 카드 내용 -->
+                            <div class="relative z-10 h-full flex flex-col justify-between p-6 text-white">
+                                <!-- 상단: To -->
+                                <div class="text-center">
+                                    <h5 class="text-2xl font-bold mb-2 text-shadow">To. <span id="preview-to">친구</span></h5>
+                                </div>
+                                
+                                <!-- 중앙: 메시지들 -->
+                                <div class="flex-1 flex flex-col justify-center min-h-0">
+                                    <div id="preview-messages" class="space-y-2 text-center">
+                                        <p class="text-base text-shadow">여기에 격려 메시지가 표시됩니다.</p>
+                                    </div>
+                                    
+                                    <!-- 커스텀 메시지 - 동적 크기 -->
+                                    <div id="preview-custom" class="mt-4 text-center bg-white bg-opacity-30 rounded-lg p-3 backdrop-blur dynamic-message-box" style="display: none;">
+                                        <p class="text-sm text-shadow leading-relaxed" id="preview-custom-text">나만의 메시지</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- 하단: From -->
+                                <div class="text-right">
+                                    <p class="text-lg font-medium text-shadow">From. <span id="preview-from">나</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 space-y-3">
+                            <!-- 메인 액션: 카드 다운로드 -->
+                            <button id="download-card-btn" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 rounded-lg hover:from-purple-600 hover:to-pink-600 transition shadow-lg text-lg">
+                                📥 격려 카드 저장하기
+                            </button>
+                            
+                            <!-- 서브 액션들 -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <button id="complete-card-btn" class="bg-green-500 text-white font-bold py-2 rounded-lg hover:bg-green-600 transition text-sm">
+                                    📋 컨설팅 보고서 보기
+                                </button>
+                                <button id="back-to-consulting-btn" class="bg-gray-400 text-white font-bold py-2 rounded-lg hover:bg-gray-500 transition text-sm">
+                                    ⬅️ 돌아가기
+                                </button>
+                            </div>
+                            
+                            <!-- 새로운 도전 버튼 -->
+                            <button id="new-case-from-card-btn" class="w-full bg-blue-500 text-white font-bold py-2 rounded-lg hover:bg-blue-600 transition">
+                                🎲 새로운 고민 사례 도전하기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 결과 화면 -->
+            <div id="result-container" class="hidden">
+                <header class="text-center p-6 bg-white rounded-xl shadow-lg mb-8">
+                    <h1 class="text-3xl font-bold text-green-800">완성된 3단계 컨설팅 보고서</h1>
+                    <p class="text-gray-600 mt-2">따뜻한 마음으로 친구를 도와주고 격려 카드까지 만든 나의 컨설팅 결과입니다.</p>
+                </header>
+                
+                <div id="result-content" class="bg-white p-8 rounded-xl shadow-lg space-y-6">
+                    <!-- 동적으로 생성될 내용 -->
+                </div>
+                
+                <div class="mt-8 flex justify-center items-center flex-col space-y-4">
+                    <div class="flex space-x-4">
+                        <button type="button" id="download-image-btn" class="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition">📸 이미지로 저장</button>
+                        <button type="button" id="download-pdf-btn" class="px-6 py-3 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition">📄 PDF로 저장</button>
+                    </div>
+                    <div class="flex space-x-4">
+                        <button type="button" id="new-challenge-btn" class="px-6 py-2 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600">🎲 다른 사례 도전하기</button>
+                        <button type="button" id="restart-btn" class="px-6 py-2 bg-gray-400 text-white font-bold rounded-lg hover:bg-gray-500">🏠 처음으로</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+// ===== 데이터베이스 =====
+
+// 90개의 고민 사례 데이터베이스
+const worryDatabase = [
+    { title: "수학 시험이 너무 어려워요", content: "다음 주에 수학 시험이 있는데 문제가 너무 어려워서 포기하고 싶어요. 아무리 공부해도 잘 안 되고, 친구들은 다 잘하는 것 같아서 더 스트레스받아요." },
+    { title: "친구와 싸웠어요", content: "제일 친한 친구와 오해 때문에 싸웠어요. 서로 말도 안 하고 있는데, 먼저 사과하기엔 제가 잘못한 게 아닌 것 같아서 고민이에요." },
+    { title: "발표가 너무 무서워요", content: "내일 국어 시간에 발표를 해야 하는데 너무 떨려요. 친구들 앞에서 말하는 게 항상 무섭고, 실수할까 봐 밤새 걱정하고 있어요." },
+    { title: "새 학교 적응이 힘들어요", content: "이번에 전학을 왔는데 새로운 환경에 적응하기가 힘들어요. 친구들은 이미 다 친해져 있고, 저만 혼자인 것 같아서 외로워요." },
+    { title: "숙제가 너무 많아요", content: "요즘 숙제가 너무 많아서 놀 시간이 전혀 없어요. 매일 밤늦게까지 숙제하는데도 다 못 끝내서 스트레스가 심해요." },
+    { title: "친구들이 저를 따돌려요", content: "요즘 친구들이 저만 빼고 모여서 이야기하고, 같이 놀자고 해도 핑계를 대며 거절해요. 제가 뭘 잘못했는지 모르겠어요." },
+    { title: "부모님이 너무 엄격해요", content: "부모님이 공부만 하라고 하시고, 친구들과 놀지도 못하게 해요. 다른 친구들은 자유롭게 노는데 저만 못 노는 것 같아서 속상해요." },
+    { title: "체육 시간이 싫어요", content: "체육 시간마다 못하는 운동을 해야 해서 스트레스예요. 친구들은 다 잘하는데 저만 못해서 창피하고, 팀을 나눌 때도 항상 마지막에 뽑혀요." },
+    { title: "선생님이 무서워요", content: "선생님이 너무 무서워요. 질문하고 싶어도 혼날까 봐 못하겠고, 실수하면 크게 화내셔서 학교 가기가 싫어져요." },
+    { title: "키가 작아서 고민이에요", content: "친구들에 비해 키가 너무 작아서 놀림받을까 봐 걱정돼요. 키 때문에 자신감도 없어지고, 앞자리에만 앉게 되는 것도 싫어요." },
+    { title: "용돈이 부족해요", content: "친구들은 다 새로운 게임이나 예쁜 문구류를 사는데, 저는 용돈이 부족해서 못 사요. 친구들과 어울리기 어렵고 소외감을 느껴요." },
+    { title: "동생이 너무 귀여움받아요", content: "동생만 부모님의 관심을 받는 것 같아요. 제가 뭘 해도 동생이 하면 더 예쁘다고 하시고, 저는 항상 참으라고만 하세요." },
+    { title: "미술 시간이 스트레스예요", content: "그림 그리기를 정말 못해서 미술 시간이 괴로워요. 친구들은 다 예쁘게 그리는데 제 그림만 이상하게 나와서 창피해요." },
+    { title: "반장 일이 너무 힘들어요", content: "반장을 하고 있는데 친구들이 말을 안 들어서 힘들어요. 선생님께는 혼나고, 친구들한테는 미움받는 것 같아서 그만두고 싶어요." },
+    { title: "학원이 너무 많아서 피곤해요", content: "수학, 영어, 과학 학원을 다니느라 너무 피곤해요. 친구들과 놀 시간도 없고, 취미 활동도 못해서 재미가 없어요." },
+    { title: "급식이 맛없어서 점심이 싫어요", content: "학교 급식이 맛없어서 점심시간이 괴로워요. 안 먹으면 배고프고, 먹으면 맛없어서 스트레스받아요." },
+    { title: "책 읽기가 너무 어려워요", content: "독서록을 써야 하는데 책 읽기가 너무 어려워요. 글자가 많으면 집중이 안 되고, 내용도 잘 이해가 안 가요." },
+    { title: "친구가 제 물건을 빌려가고 안 돌려줘요", content: "친구가 제 연필을 빌려간지 일주일이 지났는데 아직도 안 돌려줘요. 달라고 말하기도 어색하고, 계속 이러면 어떻게 해야 할지 모르겠어요." },
+    { title: "새로운 취미를 찾고 싶어요", content: "요즘 재미있는 게 없어서 심심해요. 새로운 취미를 찾고 싶은데 뭘 해야 할지 모르겠고, 혼자 하기엔 용기가 안 나요." },
+    { title: "영어 공부가 너무 어려워요", content: "영어 단어 외우기가 너무 어려워요. 외워도 금방 까먹고, 문법도 복잡해서 포기하고 싶을 때가 많아요." },
+    { title: "게임을 너무 많이 해요", content: "게임이 너무 재미있어서 시간 가는 줄 모르겠어요. 공부해야 하는데 게임 생각만 나고, 부모님께 혼나도 끊지 못하겠어요." },
+    { title: "잠을 잘 못 자요", content: "밤에 잠이 잘 안 와서 새벽까지 뒤척여요. 다음 날 수업 시간에 졸리고, 집중이 안 돼서 걱정이에요." },
+    { title: "친구가 제 비밀을 말했어요", content: "친한 친구에게만 말한 비밀을 다른 애들한테 말해버렸어요. 너무 당황스럽고 화가 나는데, 어떻게 해야 할지 모르겠어요." },
+    { title: "춤 추는 게 부끄러워요", content: "체육 시간에 댄스를 배우는데 너무 부끄러워요. 몸이 뻣뻣하고 리듬감도 없어서 친구들이 웃을까 봐 걱정돼요." },
+    { title: "친구들 앞에서 틀렸어요", content: "수업 시간에 친구들 앞에서 답을 크게 틀렸어요. 너무 창피해서 얼굴이 빨갛게 되었고, 앞으로 발표하기가 더 무서워졌어요." },
+    { title: "핸드폰을 잃어버렸어요", content: "어제 핸드폰을 잃어버렸어요. 부모님께 말씀드리기 무섭고, 친구들과 연락도 못해서 답답해요." },
+    { title: "치아교정이 아파요", content: "치아교정을 시작했는데 너무 아파요. 음식도 제대로 못 먹고, 친구들이 웃을까 봐 입을 벌리기도 싫어요." },
+    { title: "반려동물이 아파요", content: "키우던 강아지가 아픈 것 같아요. 먹지도 않고 계속 누워있는데, 부모님은 괜찮다고 하시지만 걱정돼요." },
+    { title: "소풍 갈 친구가 없어요", content: "다음 주 소풍에서 조를 만들어야 하는데 함께할 친구가 없어요. 혼자 남겨질까 봐 걱정되고, 소풍이 기대되지 않아요." },
+    { title: "선생님께 혼났어요", content: "오늘 숙제를 안 해가서 선생님께 크게 혼났어요. 친구들 앞에서 창피했고, 집에 가서 부모님께 어떻게 말할지 고민이에요." },
+    { title: "친구가 제 그림을 비웃었어요", content: "미술 시간에 열심히 그린 그림을 친구가 보고 웃었어요. 정말 열심히 그렸는데 상처받았고, 그림 그리기가 싫어졌어요." },
+    { title: "체육복을 깜빡했어요", content: "오늘 체육복을 깜빡하고 안 가져왔어요. 체육 시간에 참관해야 하는데, 선생님께 혼날까 봐 걱정돼요." },
+    { title: "좋아하는 애가 있어요", content: "같은 반에 좋아하는 친구가 있어요. 말 걸고 싶은데 용기가 안 나고, 친구들에게 들킬까 봐 걱정돼요." },
+    { title: "동아리 활동이 힘들어요", content: "들어간 동아리에서 선배들이 너무 엄격해요. 실수하면 혼나고, 그만두고 싶은데 부모님께 뭐라고 할까 봐 걱정이에요." },
+    { title: "안경을 잃어버렸어요", content: "체육 시간에 안경을 잃어버렸어요. 칠판이 안 보여서 수업을 들을 수 없고, 부모님께 어떻게 말할지 고민이에요." },
+    { title: "친구가 제 도시락을 먹었어요", content: "친구가 제가 안 본 사이에 제 도시락을 먹어버렸어요. 점심시간에 먹을 게 없어서 배고프고, 어떻게 대처해야 할지 모르겠어요." },
+    { title: "방과후 수업이 지겨워요", content: "방과후 수업이 너무 지겨워요. 집에 가서 놀고 싶은데 부모님이 꼭 들으라고 하셔서 스트레스받아요." },
+    { title: "목소리 변성기예요", content: "목소리 변성기가 와서 이상한 소리가 나요. 말하기가 부끄럽고, 친구들이 웃을까 봐 걱정돼요." },
+    { title: "부모님이 이혼하실 것 같아요", content: "요즘 부모님이 자주 싸우세요. 이혼하실까 봐 걱정되고, 제 탓인 것 같아서 죄책감이 들어요." },
+    { title: "성적이 떨어졌어요", content: "이번 시험에서 성적이 많이 떨어졌어요. 부모님께 실망드릴까 봐 걱정되고, 어떻게 공부해야 할지 모르겠어요." },
+    { title: "친구들이 제 외모를 놀려요", content: "친구들이 제 외모를 자꾸 놀려요. 농담이라고 하지만 상처받고, 거울 보기도 싫어졌어요." },
+    { title: "새로운 반 친구들과 어울리기 어려워요", content: "새 학년이 되어서 반이 바뀌었는데, 새로운 친구들과 어울리기 어려워요. 예전 친구들이 그리워요." },
+    { title: "진로가 고민이에요", content: "장래희망이 뭔지 모르겠어요. 친구들은 다 정해진 것 같은데 저만 모르겠어서 불안해요." },
+    { title: "조별과제에서 혼자 다 해야 해요", content: "조별과제를 하는데 조원들이 아무것도 안 해요. 제가 다 해야 하는데 너무 부담스럽고 화나요." },
+    { title: "집에서 공부할 곳이 없어요", content: "집이 좁아서 조용히 공부할 공간이 없어요. 가족들 소리 때문에 집중이 안 되어서 고민이에요." },
+    { title: "친구의 생일선물이 고민이에요", content: "친한 친구 생일인데 뭘 선물할지 모르겠어요. 용돈이 많지 않아서 좋은 선물을 못 줄까 봐 걱정돼요." },
+    { title: "수영을 못해요", content: "수영 수업이 있는데 물이 무서워서 못하겠어요. 친구들은 다 잘하는데 저만 못해서 창피해요." },
+    { title: "급식 당번이 힘들어요", content: "급식 당번을 하는데 무거운 것들을 나르기 힘들어요. 친구들은 도와주지 않고, 혼자 하기 벅차요." },
+    { title: "버스에서 자리가 없어요", content: "등하교할 때 버스에 자리가 없어서 계속 서서 가야 해요. 가방이 무거워서 힘들고, 흔들려서 위험해요." },
+    { title: "친구가 제 물건을 망가뜨렸어요", content: "친구가 제가 아끼는 필통을 떨어뜨려서 망가뜨렸어요. 사과는 했지만 마음이 상하고, 어떻게 말해야 할지 모르겠어요." },
+    { title: "학교 축제 준비가 스트레스예요", content: "학교 축제 준비 때문에 스트레스받아요. 역할 분담도 잘 안 되고, 친구들과 의견이 안 맞아서 힘들어요." },
+    { title: "몸무게가 늘었어요", content: "최근에 몸무게가 많이 늘었어요. 옷이 안 맞고, 친구들이 뭐라고 할까 봐 걱정돼요." },
+    { title: "반 대표를 뽑는데 아무도 안 뽑아줘요", content: "반 대표 선거에 나갔는데 아무도 저를 뽑아주지 않을 것 같아요. 창피해서 후회되지만 이미 늦었어요." },
+    { title: "학교 앞 과자가게에서 돈을 잃어버렸어요", content: "학교 앞 과자가게에서 천 원을 잃어버렸어요. 찾을 수 없어서 속상하고, 부모님께 말하기도 어려워요." },
+    { title: "친구에게 거짓말을 했어요", content: "친구에게 거짓말을 했는데 들킬까 봐 걱정돼요. 진실을 말해야 할지, 계속 숨겨야 할지 고민이에요." },
+    { title: "교과서를 집에 두고 왔어요", content: "오늘 수업에 필요한 교과서를 집에 두고 왔어요. 친구한테 빌리기도 어색하고, 수업을 어떻게 들을지 걱정이에요." },
+    { title: "점심시간이 너무 짧아요", content: "점심시간이 너무 짧아서 급하게 먹어야 해요. 친구들과 이야기할 시간도 없고, 소화도 안 돼요." },
+    { title: "실험시간에 실수했어요", content: "과학 실험시간에 실수해서 실험 기구를 깨뜨렸어요. 선생님께 혼나고, 조원들에게 미안해요." },
+    { title: "미용실에서 머리를 이상하게 잘랐어요", content: "미용실에서 머리를 이상하게 잘라서 학교 가기 싫어요. 친구들이 웃을까 봐 모자를 쓰고 다니고 싶어요." },
+    { title: "아침에 일어나기 힘들어요", content: "매일 아침에 일어나기 너무 힘들어요. 늦잠 자서 지각할까 봐 걱정되고, 아침 먹을 시간도 없어요." },
+    { title: "친구가 제 일기를 읽었어요", content: "친구가 제 일기장을 몰래 읽었어요. 비밀스러운 얘기들이 많이 써있어서 부끄럽고 화나요." },
+    { title: "교실 청소할 때 혼자 해요", content: "교실 청소시간에 친구들은 다 빠지고 저만 혼자 청소해요. 불공평하다고 생각되지만 말하기 어려워요." },
+    { title: "학부모 상담 때문에 걱정이에요", content: "곧 학부모 상담이 있는데 성적이 안 좋아서 걱정돼요. 부모님이 실망하실까 봐 무서워요." },
+    { title: "친구들끼리 비밀 얘기를 해요", content: "친구들이 저만 빼고 비밀 얘기를 해요. 무슨 얘기인지 궁금하지만 물어보기도 어색해요." },
+    { title: "체육시간에 다쳤어요", content: "체육시간에 넘어져서 무릎이 깨졌어요. 아프지만 약하다고 생각될까 봐 아프다고 말하기 어려워요." },
+    { title: "급식실에서 실수했어요", content: "급식실에서 국을 쏟아서 바닥을 더럽혔어요. 사람들이 다 쳐다봐서 부끄럽고, 뒷정리하느라 힘들었어요." },
+    { title: "반에서 인기가 없어요", content: "우리 반에서 저만 인기가 없는 것 같아요. 친구들은 다 재미있어 보이는데 저만 혼자인 것 같아서 외로워요." },
+    { title: "부모님께 거짓말했어요", content: "시험 점수가 나빠서 부모님께 거짓말했어요. 들킬까 봐 무섭고, 계속 거짓말해야 하나 고민이에요." },
+    { title: "학교 가는 길이 무서워요", content: "학교 가는 길에 무서운 개가 있어서 지나가기 무서워요. 돌아가자니 너무 멀고, 어떻게 해야 할지 모르겠어요." },
+    { title: "숙제를 깜빡했어요", content: "어제 숙제하는 걸 깜빡했어요. 오늘 검사인데 어떻게 해야 할지 모르겠고, 선생님께 혼날까 봐 걱정돼요." },
+    { title: "친구에게 돈을 빌려줬는데 안 갚아요", content: "친구에게 이천 원을 빌려줬는데 한 달째 안 갚아요. 달라고 말하기 어색하고, 우정이 깨질까 봐 걱정돼요." },
+    { title: "교실에서 지갑을 잃어버렸어요", content: "교실에서 지갑을 잃어버렸어요. 용돈이 들어있었는데 찾을 수 없어서 속상하고, 누가 가져갔을까 의심스러워요." },
+    { title: "선생님께 잘못 대답했어요", content: "수업시간에 선생님 질문에 완전히 엉뚱한 대답을 했어요. 친구들이 웃고, 선생님도 당황하셔서 너무 창피해요." },
+    { title: "친구가 제 별명을 이상하게 지었어요", content: "친구가 저한테 이상한 별명을 지어서 부르고 있어요. 싫다고 해도 계속 불러서 스트레스받아요." },
+    { title: "학교 발표 대회에 나가기 싫어요", content: "선생님이 발표 대회에 나가라고 하시는데 너무 무서워요. 많은 사람들 앞에서 발표하는 게 두려워서 도망가고 싶어요." },
+    { title: "도시락을 까먹고 안 쌌어요", content: "오늘 아침에 바빠서 도시락을 까먹고 안 쌌어요. 점심시간에 먹을 게 없어서 배고프고, 친구들한테 얻어먹기도 어색해요." },
+    { title: "체육복을 잃어버렸어요", content: "체육복을 어디선가 잃어버렸어요. 새로 사야 하는데 부모님께 말하기 어렵고, 체육시간이 걱정돼요." },
+    { title: "급식에 싫어하는 음식만 나와요", content: "요즘 급식에 제가 싫어하는 음식만 계속 나와요. 안 먹으면 배고프고, 억지로 먹으면 토할 것 같아요." },
+    { title: "친구가 제 흉을 봤어요", content: "뒤에서 친구들이 제 흉을 보는 걸 들었어요. 너무 상처받았고, 그 친구들과 어떻게 지내야 할지 모르겠어요." },
+    { title: "새로운 안경이 어색해요", content: "새 안경을 맞췄는데 모양이 어색해요. 친구들이 이상하다고 할까 봐 걱정되고, 벗고 다니고 싶어요." },
+    { title: "반 친구가 전학을 가요", content: "제일 친한 친구가 다음 달에 전학을 간다고 해요. 너무 슬프고, 혼자 남겨질 것 같아서 불안해요." },
+    { title: "학교 축제에서 실수했어요", content: "학교 축제 공연에서 큰 실수를 했어요. 많은 사람들이 봤는데 너무 창피하고, 친구들이 뭐라고 할까 봐 걱정돼요." },
+    { title: "교과서에 낙서를 했어요", content: "지루해서 교과서에 낙서를 했는데 지워지지 않아요. 선생님이 보시면 혼날 것 같아서 걱정돼요." },
+    { title: "학교에서 넘어져서 창피했어요", content: "복도에서 넘어져서 친구들 앞에서 창피했어요. 다치지는 않았지만 너무 부끄러워서 얼굴을 들 수가 없어요." },
+    { title: "친구들과 취향이 안 맞아요", content: "친구들이 좋아하는 것들을 저는 별로 안 좋아해요. 어울리기 위해 억지로 맞춰야 하나 고민이에요." },
+    { title: "보건실에 자주 가요", content: "요즘 머리가 자주 아파서 보건실에 자주 가요. 꾀병인 것 같다고 생각될까 봐 걱정되지만 정말 아파요." },
+    { title: "학교 앞에서 용돈을 다 썼어요", content: "학교 앞 문구점에서 용돈을 다 써버렸어요. 이번 주에 쓸 돈이 없어서 어떻게 해야 할지 모르겠어요." }
+];
+
+// 100개의 격려 메시지 데이터베이스
+const encouragementMessages = [
+    // 노력과 성장 관련 (1-25)
+    "힘든 시간을 견뎌내고 있는 너를 응원해",
+    "작은 걸음이라도 계속 앞으로 나아가는 너가 멋져",
+    "완벽하지 않아도 괜찮아, 너는 충분히 소중해",
+    "어려운 일이 있어도 너라면 분명 해낼 수 있을 거야",
+    "너의 노력하는 모습이 정말 아름다워",
+    "조급해하지 말고 너만의 속도로 가면 돼",
+    "어제보다 조금이라도 나은 오늘이면 충분해",
+    "너의 진심과 노력은 반드시 결실을 맺을 거야",
+    "실패해도 괜찮아, 그것도 성장하는 과정이니까",
+    "작은 성공이라도 스스로를 칭찬해줘",
+    "매일 조금씩 성장하고 있는 너를 믿어",
+    "포기하지 않는 네 마음이 가장 소중해",
+    "지금 배우고 있는 모든 것이 너의 힘이 될 거야",
+    "실수는 배움의 기회야, 두려워하지 마",
+    "네가 보여주는 끈기와 인내심이 정말 대단해",
+    "천천히 가도 괜찮아, 꾸준함이 더 중요해",
+    "네 안에 숨어있는 가능성을 믿어봐",
+    "오늘의 작은 노력이 내일의 큰 변화를 만들어",
+    "힘들어도 포기하지 않는 너의 모습이 멋져",
+    "네가 이겨낸 어려움들이 너를 더 강하게 만들어",
+    "모든 경험이 너를 성장시키는 소중한 자산이야",
+    "지금 하고 있는 노력이 헛되지 않을 거야",
+    "작은 발전이라도 그것은 분명한 성장이야",
+    "네 노력을 보고 있는 사람들이 있어",
+    "오늘도 최선을 다한 너 자신을 격려해줘",
+    
+    // 자신감과 용기 관련 (26-45)
+    "혼자가 아니야, 네 곁에 응원하는 사람이 있어",
+    "포기하고 싶을 때가 있어도 너는 강한 사람이야",
+    "네가 있어서 세상이 더 따뜻해져",
+    "지금 이 순간의 너도 충분히 멋진 사람이야",
+    "모든 것이 완벽할 필요는 없어, 너답게 살면 돼",
+    "네 안에는 생각보다 큰 용기가 숨어있어",
+    "어떤 상황에서도 너는 소중한 존재야",
+    "네 마음의 따뜻함이 다른 사람들에게 힘이 돼",
+    "자신을 믿어, 너는 할 수 있어",
+    "네가 가진 특별함을 잊지 마",
+    "다른 사람과 비교하지 말고 너만의 길을 가",
+    "네 감정을 표현하는 것도 용기 있는 일이야",
+    "두려워해도 괜찮아, 그래도 도전하는 너가 대단해",
+    "네 목소리도 중요해, 당당하게 말해도 돼",
+    "완벽하지 않은 모습도 너의 매력이야",
+    "네가 웃을 때 주변이 더 밝아져",
+    "어려운 선택을 하는 너의 용기를 존경해",
+    "네 생각과 의견도 충분히 가치 있어",
+    "실수를 두려워하지 말고 도전해봐",
+    "네가 보여주는 진정성이 정말 아름다워",
+    
+    // 친구 관계 관련 (46-60)
+    "진정한 친구는 너의 편이 되어줄 거야",
+    "좋은 친구가 되려고 노력하는 네 마음이 예뻐",
+    "친구와의 갈등도 더 깊은 이해로 이어질 거야",
+    "네가 먼저 다가가는 따뜻한 마음이 소중해",
+    "친구를 배려하는 너의 마음이 아름다워",
+    "혼자 있는 시간도 나를 알아가는 소중한 시간이야",
+    "새로운 친구를 만날 기회는 언제나 있어",
+    "네가 보여주는 우정이 다른 사람들에게 감동을 줘",
+    "친구의 아픔을 함께 나누는 너의 마음이 따뜻해",
+    "때로는 혼자만의 시간이 필요할 수도 있어",
+    "네가 베푸는 친절이 언젠가 돌아올 거야",
+    "좋은 친구를 사귀려면 먼저 좋은 친구가 되어야 해",
+    "친구와의 소중한 추억을 만들어가고 있어",
+    "네가 누군가에게 소중한 친구가 되고 있어",
+    "친구들과 함께하는 시간을 소중히 여기는 너가 멋져",
+    
+    // 학습과 성취 관련 (61-75)
+    "공부하는 것도 네 꿈을 위한 소중한 과정이야",
+    "모르는 것이 있어도 괜찮아, 배워가면 돼",
+    "네가 이해하려고 노력하는 모습이 대단해",
+    "어려운 문제도 차근차근 풀어나가고 있어",
+    "질문하는 것은 부끄러운 일이 아니야",
+    "네 호기심과 탐구심이 정말 소중해",
+    "시험 결과보다 네가 배운 것이 더 중요해",
+    "네가 집중하는 모습을 보면 감동이야",
+    "어려운 과목도 포기하지 않는 너를 응원해",
+    "네 관심 분야에서 빛나는 모습이 멋져",
+    "천천히 이해해가는 과정도 의미 있어",
+    "네가 발견한 새로운 지식이 뿌듯할 거야",
+    "공부 방법을 찾아가는 네 노력이 훌륭해",
+    "네가 세운 작은 목표들을 응원해",
+    "배움에 대한 네 열정이 아름다워",
+    
+    // 힘들 때 위로 관련 (76-90)
+    "지금의 고민도 언젠가는 좋은 경험이 될 거야",
+    "힘들 때는 잠깐 쉬어가도 괜찮아",
+    "스스로에게 너무 엄격하지 말고 따뜻하게 대해줘",
+    "네가 웃는 모습을 보면 나도 기분이 좋아져",
+    "슬픈 감정도 소중한 너의 일부야",
+    "힘든 하루도 언젠가는 지나갈 거야",
+    "네 마음을 충분히 이해해",
+    "울고 싶을 때는 우는 것도 괜찮아",
+    "혼자 견디지 말고 도움을 요청해도 돼",
+    "네 상처도 시간이 지나면 치유될 거야",
+    "지금은 힘들어도 분명 좋은 날이 올 거야",
+    "네 감정을 무시하지 말고 소중히 여겨",
+    "어려운 시간을 보내고 있는 너를 안아주고 싶어",
+    "네가 느끼는 모든 감정이 소중해",
+    "이 시간도 지나면 추억이 될 거야",
+    
+    // 꿈과 미래, 일반 응원 (91-100)
+    "너의 꿈을 향해 한 걸음씩 나아가고 있어",
+    "네가 그리는 미래가 정말 기대돼",
+    "네 꿈을 응원하는 사람들이 여기 있어",
+    "지금 하는 모든 일이 너의 미래를 만들어가고 있어",
+    "네가 좋아하는 일을 할 때 가장 빛나",
+    "오늘 하루도 수고했어",
+    "네가 있어서 우리는 더 행복해",
+    "네 존재 자체가 선물이야",
+    "내일은 오늘보다 더 좋은 날이 될 거야",
+    "언제나 네 편에서 응원하고 있어"
+];
+
+// ===== 전역 변수 =====
+let currentCase = null;
+let currentStudent = { grade: '', class: '', name: '' };
+let consultingData = { empathy: '', suggestion: '' };
+let selectedMessages = [];
+let currentTemplate = 'pastel';
+let currentTextColor = 'white';
+let backgroundImage = null;
+
+// ===== 이벤트 리스너 설정 =====
+document.addEventListener('DOMContentLoaded', () => {
+    const startScreen = document.getElementById('start-screen');
+    const consultingScreen = document.getElementById('consulting-screen');
+    const cardMakingScreen = document.getElementById('card-making-screen');
+    const resultContainer = document.getElementById('result-container');
+    
+    // 컨설팅 시작
+    document.getElementById('start-consulting-btn').addEventListener('click', () => {
+        const grade = document.getElementById('grade').value || '?';
+        const className = document.getElementById('class').value || '?';
+        const name = document.getElementById('name').value || '익명';
+        
+        currentStudent = { grade, class: className, name };
+        
+        startScreen.classList.add('hidden');
+        consultingScreen.classList.remove('hidden');
+        loadNewCase();
+    });
+    
+    // 새로운 고민 사례 보기
+    document.getElementById('new-case-btn').addEventListener('click', loadNewCase);
+    
+    // 3단계로 이동
+    document.getElementById('next-to-card-btn').addEventListener('click', () => {
+        const empathy = document.getElementById('empathy').value.trim();
+        const suggestion = document.getElementById('suggestion').value.trim();
+        
+        if (!empathy && !suggestion) {
+            alert('1단계(공감)와 2단계(제안) 중 적어도 하나는 작성해주세요.');
+            return;
+        }
+        
+        consultingData = { 
+            empathy: empathy || '(작성되지 않음)', 
+            suggestion: suggestion || '(작성되지 않음)' 
+        };
+        
+        consultingScreen.classList.add('hidden');
+        cardMakingScreen.classList.remove('hidden');
+        
+        // 카드 입력란 초기값 설정
+        document.getElementById('card-to').value = '고민 상담자';
+        document.getElementById('card-from').value = currentStudent.name || '나';
+        
+        updateCardPreview();
+    });
+    
+    // 격려 메시지 뽑기
+    document.getElementById('draw-message-btn').addEventListener('click', () => {
+        const randomIndex = Math.floor(Math.random() * encouragementMessages.length);
+        const message = encouragementMessages[randomIndex];
+        
+        document.getElementById('drawn-message').textContent = message;
+        document.getElementById('add-message-btn').classList.remove('hidden');
+        document.getElementById('add-message-btn').dataset.message = message;
+    });
+    
+    // 메시지 추가하기
+    document.getElementById('add-message-btn').addEventListener('click', (e) => {
+        const message = e.target.dataset.message;
+        if (selectedMessages.length < 4 && !selectedMessages.includes(message)) {
+            selectedMessages.push(message);
+            updateSelectedMessages();
+            updateCardPreview();
+        }
+    });
+    
+    // 배경 이미지 업로드
+    document.getElementById('upload-background-btn').addEventListener('click', () => {
+        document.getElementById('background-upload').click();
+    });
+    
+    document.getElementById('background-upload').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                backgroundImage = e.target.result;
+                document.getElementById('background-img').src = backgroundImage;
+                document.getElementById('upload-placeholder').classList.add('hidden');
+                document.getElementById('background-preview').classList.remove('hidden');
+                document.getElementById('remove-background-btn').classList.remove('hidden');
+                updateCardPreview();
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    // 배경 이미지 제거
+    document.getElementById('remove-background-btn').addEventListener('click', () => {
+        backgroundImage = null;
+        document.getElementById('upload-placeholder').classList.remove('hidden');
+        document.getElementById('background-preview').classList.add('hidden');
+        document.getElementById('remove-background-btn').classList.add('hidden');
+        updateCardPreview();
+    });
+    
+    // 템플릿 선택
+    document.querySelectorAll('.template-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.template-btn').forEach(b => {
+                b.classList.remove('border-purple-400', 'bg-purple-100');
+                b.classList.add('border-gray-300');
+            });
+            e.target.classList.remove('border-gray-300');
+            e.target.classList.add('border-purple-400', 'bg-purple-100');
+            
+            currentTemplate = e.target.dataset.template;
+            updateCardTemplate();
+        });
+    });
+    
+    // 글자색 선택
+    document.querySelectorAll('.text-color-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.text-color-btn').forEach(b => {
+                b.classList.remove('ring-4', 'ring-purple-400');
+            });
+            e.target.classList.add('ring-4', 'ring-purple-400');
+            
+            currentTextColor = e.target.dataset.color;
+            updateCardPreview();
+        });
+    });
+    
+    // 입력 필드 이벤트
+    document.getElementById('card-to').addEventListener('input', updateCardPreview);
+    document.getElementById('card-from').addEventListener('input', updateCardPreview);
+    document.getElementById('custom-message').addEventListener('input', updateCardPreview);
+    
+    // 카드 이미지 다운로드
+    document.getElementById('download-card-btn').addEventListener('click', downloadCardImage);
+    
+    // 컨설팅으로 돌아가기
+    document.getElementById('back-to-consulting-btn').addEventListener('click', () => {
+        cardMakingScreen.classList.add('hidden');
+        consultingScreen.classList.remove('hidden');
+    });
+    
+    // 격려 카드 완성 (컨설팅 보고서 보기)
+    document.getElementById('complete-card-btn').addEventListener('click', () => {
+        showFinalResult();
+    });
+    
+    // 새로운 사례 도전 (카드 화면에서 바로)
+    document.getElementById('new-case-from-card-btn').addEventListener('click', () => {
+        cardMakingScreen.classList.add('hidden');
+        consultingScreen.classList.remove('hidden');
+        loadNewCase();
+        
+        // 1,2단계 폼은 리셋하지만 메시지와 카드 설정은 유지
+        document.getElementById('empathy').value = '';
+        document.getElementById('suggestion').value = '';
+        
+        // 컨설팅 데이터 초기화
+        consultingData = { empathy: '', suggestion: '' };
+    });
+    
+    // 결과 화면 버튼들
+    document.getElementById('download-image-btn').addEventListener('click', downloadReportAsImage);
+    document.getElementById('download-pdf-btn').addEventListener('click', downloadReportAsPDF);
+    
+    document.getElementById('new-challenge-btn').addEventListener('click', () => {
+        resetAll();
+        startScreen.classList.remove('hidden');
+        resultContainer.classList.add('hidden');
+        loadNewCase();
+    });
+    
+    document.getElementById('restart-btn').addEventListener('click', () => {
+        resetAll();
+        startScreen.classList.remove('hidden');
+        resultContainer.classList.add('hidden');
+    });
+});
+
+// ===== 핵심 기능 함수들 =====
+
+function loadNewCase() {
+    const randomIndex = Math.floor(Math.random() * worryDatabase.length);
+    currentCase = worryDatabase[randomIndex];
+    
+    document.getElementById('case-title').textContent = currentCase.title;
+    document.getElementById('case-content').textContent = currentCase.content;
+    
+    document.getElementById('case-display').scrollIntoView({ behavior: 'smooth' });
+}
+
+function updateSelectedMessages() {
+    const container = document.getElementById('selected-messages');
+    container.innerHTML = '';
+    
+    selectedMessages.forEach((message, index) => {
+        const messageEl = document.createElement('div');
+        messageEl.className = 'flex items-center justify-between p-2 bg-purple-50 rounded text-sm';
+        messageEl.innerHTML = `
+            <span class="flex-1">${message}</span>
+            <button class="remove-message text-red-500 hover:text-red-700 ml-2" data-index="${index}">×</button>
+        `;
+        container.appendChild(messageEl);
+    });
+    
+    // 제거 버튼 이벤트
+    container.querySelectorAll('.remove-message').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const index = parseInt(e.target.dataset.index);
+            selectedMessages.splice(index, 1);
+            updateSelectedMessages();
+            updateCardPreview();
+        });
+    });
+}
+
+function getTemplateGradient(template) {
+    const gradients = {
+        pastel: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%)',
+        nature: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #d299c2 100%)',
+        sky: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 50%, #a855f7 100%)',
+        sunset: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%)',
+        ocean: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+        forest: 'linear-gradient(135deg, #4ecdc4 0%, #44a08d 50%, #093637 100%)'
+    };
+    return gradients[template] || gradients.pastel;
+}
+
+function getTextColorClass(colorName) {
+    const colors = {
+        white: '#ffffff',
+        cream: '#fef7ed', 
+        'light-blue': '#dbeafe',
+        'light-pink': '#fce7f3',
+        'light-green': '#d1fae5'
+    };
+    return colors[colorName] || colors.white;
+}
+
+function updateCardTemplate() {
+    updateCardPreview();
+}
+
+function updateCardPreview() {
+    const to = document.getElementById('card-to').value || '친구';
+    const from = document.getElementById('card-from').value || '나';
+    const customMessage = document.getElementById('custom-message').value.trim();
+    
+    // 배경 업데이트
+    const cardBackground = document.getElementById('card-background');
+    if (backgroundImage) {
+        cardBackground.style.backgroundImage = `url(${backgroundImage})`;
+        cardBackground.style.backgroundSize = 'cover';
+        cardBackground.style.backgroundPosition = 'center';
+        cardBackground.style.background = '';
+    } else {
+        cardBackground.style.backgroundImage = '';
+        cardBackground.style.background = getTemplateGradient(currentTemplate);
+    }
+    
+    // 글자색 업데이트
+    const textColor = getTextColorClass(currentTextColor);
+    const cardContent = document.querySelector('#card-preview .relative.z-10');
+    cardContent.style.color = textColor;
+    
+    // To/From 업데이트
+    document.getElementById('preview-to').textContent = to;
+    document.getElementById('preview-from').textContent = from;
+    
+    // 메시지들 업데이트
+    const messagesContainer = document.getElementById('preview-messages');
+    if (selectedMessages.length > 0) {
+        const fontSize = selectedMessages.length <= 2 ? 'text-lg' : selectedMessages.length <= 3 ? 'text-base' : 'text-sm';
+        const spacing = selectedMessages.length <= 2 ? 'space-y-3' : 'space-y-2';
+        
+        messagesContainer.className = `${spacing} text-center`;
+        messagesContainer.innerHTML = selectedMessages.map(msg => 
+            `<p class="${fontSize} text-shadow leading-relaxed">• ${msg}</p>`
+        ).join('');
+    } else {
+        messagesContainer.className = 'text-center';
+        messagesContainer.innerHTML = '<p class="text-base text-shadow">여기에 격려 메시지가 표시됩니다.</p>';
+    }
+    
+    // 커스텀 메시지 업데이트 - 동적 크기 조절
+    const customContainer = document.getElementById('preview-custom');
+    const customText = document.getElementById('preview-custom-text');
+    
+    if (customMessage) {
+        customContainer.style.display = 'block';
+        
+        // 텍스트 길이에 따른 폰트 크기와 박스 높이 조절
+        let customFontSize, boxHeight;
+        if (customMessage.length <= 30) {
+            customFontSize = 'text-base';
+            boxHeight = '60px';
+        } else if (customMessage.length <= 60) {
+            customFontSize = 'text-sm';
+            boxHeight = '80px';
+        } else if (customMessage.length <= 100) {
+            customFontSize = 'text-xs';
+            boxHeight = '100px';
+        } else {
+            customFontSize = 'text-xs';
+            boxHeight = '120px';
+        }
+        
+        customText.className = `${customFontSize} text-shadow leading-relaxed`;
+        customText.textContent = customMessage;
+        customContainer.style.minHeight = boxHeight;
+        
+        // 텍스트가 길면 스크롤 가능하게
+        if (customMessage.length > 150) {
+            customContainer.style.maxHeight = '120px';
+            customContainer.style.overflowY = 'auto';
+        } else {
+            customContainer.style.overflowY = 'visible';
+        }
+    } else {
+        customContainer.style.display = 'none';
+    }
+}
+
+async function downloadCardImage() {
+    const canvas = document.getElementById('card-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // 다운로드 버튼 로딩 상태
+    const downloadBtn = document.getElementById('download-card-btn');
+    const originalText = downloadBtn.innerHTML;
+    downloadBtn.innerHTML = '📥 저장 중...';
+    downloadBtn.disabled = true;
+    
+    // 캔버스 크기 설정 (고화질)
+    canvas.width = 1200;
+    canvas.height = 800;
+    
+    const to = document.getElementById('card-to').value || '친구';
+    const from = document.getElementById('card-from').value || '나';
+    const customMessage = document.getElementById('custom-message').value.trim();
+    
+    try {
+        // 배경 그리기
+        if (backgroundImage) {
+            const img = new Image();
+            await new Promise((resolve) => {
+                img.onload = resolve;
+                img.src = backgroundImage;
+            });
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        } else {
+            // 그라디언트 배경
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            if (currentTemplate === 'pastel') {
+                gradient.addColorStop(0, '#ffecd2');
+                gradient.addColorStop(0.5, '#fcb69f');
+                gradient.addColorStop(1, '#ff9a9e');
+            } else if (currentTemplate === 'nature') {
+                gradient.addColorStop(0, '#a8edea');
+                gradient.addColorStop(0.5, '#fed6e3');
+                gradient.addColorStop(1, '#d299c2');
+            } else if (currentTemplate === 'sky') {
+                gradient.addColorStop(0, '#89f7fe');
+                gradient.addColorStop(0.5, '#66a6ff');
+                gradient.addColorStop(1, '#a855f7');
+            } else if (currentTemplate === 'sunset') {
+                gradient.addColorStop(0, '#ff9a9e');
+                gradient.addColorStop(0.5, '#fecfef');
+                gradient.addColorStop(1, '#fecfef');
+            } else if (currentTemplate === 'ocean') {
+                gradient.addColorStop(0, '#667eea');
+                gradient.addColorStop(0.5, '#764ba2');
+                gradient.addColorStop(1, '#f093fb');
+            } else if (currentTemplate === 'forest') {
+                gradient.addColorStop(0, '#4ecdc4');
+                gradient.addColorStop(0.5, '#44a08d');
+                gradient.addColorStop(1, '#093637');
+            }
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        // 오버레이 (가독성을 위한 반투명 레이어)
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // 텍스트 스타일 설정 - 선택한 글자색 적용
+        ctx.fillStyle = getTextColorClass(currentTextColor);
+        ctx.textAlign = 'center';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        
+        // "To" 텍스트
+        ctx.font = 'bold 48px Arial, sans-serif';
+        ctx.fillText(`To. ${to}`, canvas.width / 2, 120);
+        
+        // 격려 메시지들
+        let messageY = 200;
+        const messageSpacing = selectedMessages.length <= 2 ? 80 : selectedMessages.length <= 3 ? 65 : 55;
+        const messageFontSize = selectedMessages.length <= 2 ? 36 : selectedMessages.length <= 3 ? 32 : 28;
+        
+        ctx.font = `${messageFontSize}px Arial, sans-serif`;
+        
+        selectedMessages.forEach((message) => {
+            // 긴 메시지는 줄바꿈 처리
+            const words = message.split(' ');
+            const maxWidth = canvas.width - 200;
+            let line = '';
+            
+            for (let n = 0; n < words.length; n++) {
+                const testLine = line + words[n] + ' ';
+                const metrics = ctx.measureText(testLine);
+                const testWidth = metrics.width;
+                
+                if (testWidth > maxWidth && n > 0) {
+                    ctx.fillText(`• ${line}`, canvas.width / 2, messageY);
+                    line = words[n] + ' ';
+                    messageY += messageSpacing;
+                } else {
+                    line = testLine;
+                }
+            }
+            ctx.fillText(`• ${line}`, canvas.width / 2, messageY);
+            messageY += messageSpacing;
+        });
+        
+        // 커스텀 메시지 - 동적 크기 처리
+        if (customMessage) {
+            messageY += 30;
+            
+            // 메시지 길이에 따른 배경 높이 조절
+            const lines = Math.ceil(customMessage.length / 50);
+            const customBgHeight = Math.max(80, lines * 40);
+            const customBgY = messageY - 25;
+            
+            ctx.shadowColor = 'transparent';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.fillRect(100, customBgY, canvas.width - 200, customBgHeight);
+            
+            // 커스텀 메시지 텍스트
+            ctx.fillStyle = getTextColorClass(currentTextColor);
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = 4;
+            
+            // 메시지 길이에 따른 폰트 크기 조절
+            let customFontSize;
+            if (customMessage.length <= 30) customFontSize = 32;
+            else if (customMessage.length <= 60) customFontSize = 28;
+            else if (customMessage.length <= 100) customFontSize = 24;
+            else customFontSize = 20;
+            
+            ctx.font = `${customFontSize}px Arial, sans-serif`;
+            
+            // 커스텀 메시지도 줄바꿈 처리
+            const customWords = customMessage.split(' ');
+            const customMaxWidth = canvas.width - 250;
+            let customLine = '';
+            let customLineY = messageY + 15;
+            
+            for (let n = 0; n < customWords.length; n++) {
+                const testLine = customLine + customWords[n] + ' ';
+                const metrics = ctx.measureText(testLine);
+                const testWidth = metrics.width;
+                
+                if (testWidth > customMaxWidth && n > 0) {
+                    ctx.fillText(customLine, canvas.width / 2, customLineY);
+                    customLine = customWords[n] + ' ';
+                    customLineY += customFontSize + 5;
+                } else {
+                    customLine = testLine;
+                }
+            }
+            ctx.fillText(customLine, canvas.width / 2, customLineY);
+        }
+        
+        // "From" 텍스트
+        ctx.font = 'bold 36px Arial, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText(`From. ${from}`, canvas.width - 80, canvas.height - 60);
+        
+        // 이미지 다운로드
+        const link = document.createElement('a');
+        link.download = `격려카드_${to}_${from}.png`;
+        link.href = canvas.toDataURL();
+        link.click();
+        
+        // 성공 메시지 표시
+        downloadBtn.innerHTML = '✅ 저장 완료!';
+        downloadBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        
+        // 3초 후 원래 상태로 복구
+        setTimeout(() => {
+            downloadBtn.innerHTML = originalText;
+            downloadBtn.style.background = '';
+            downloadBtn.disabled = false;
+        }, 3000);
+        
+    } catch (error) {
+        console.error('카드 이미지 생성 중 오류:', error);
+        
+        // 오류 시 버튼 복구
+        downloadBtn.innerHTML = '❌ 저장 실패';
+        downloadBtn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+        
+        setTimeout(() => {
+            downloadBtn.innerHTML = originalText;
+            downloadBtn.style.background = '';
+            downloadBtn.disabled = false;
+        }, 3000);
+        
+        alert('카드 이미지 다운로드 중 오류가 발생했습니다.');
+    }
+}
+
+function showFinalResult() {
+    if (!currentCase) {
+        alert('고민 사례를 먼저 선택해주세요.');
+        return;
+    }
+    
+    if (!consultingData.empathy && !consultingData.suggestion) {
+        alert('1단계(공감)나 2단계(제안) 중 적어도 하나는 작성해주세요.');
+        return;
+    }
+    
+    const cardData = {
+        to: document.getElementById('card-to').value || '친구',
+        from: document.getElementById('card-from').value || '나',
+        messages: selectedMessages,
+        customMessage: document.getElementById('custom-message').value,
+        template: currentTemplate
+    };
+    
+    const currentDate = new Date();
+    const dateString = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월 ${currentDate.getDate()}일`;
+    
+    const resultContent = `
+        <div class="border-b-2 pb-4 mb-6">
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="text-sm text-gray-500">컨설턴트 정보</p>
+                    <p class="text-xl font-bold text-green-700">${currentStudent.grade}학년 ${currentStudent.class}반 ${currentStudent.name}</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-500">작성일</p>
+                    <p class="font-medium">${dateString}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gray-50 p-6 rounded-lg mb-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-3">📋 접수된 고민 사례</h3>
+            <div class="bg-white p-4 rounded-lg border-l-4 border-orange-400">
+                <h4 class="font-bold text-lg text-gray-700 mb-2">${currentCase.title}</h4>
+                <p class="text-gray-700 leading-relaxed">${currentCase.content}</p>
+            </div>
+        </div>
+        
+        <div class="space-y-6">
+            <div class="bg-green-50 p-6 rounded-lg border-l-4 border-green-500">
+                <h3 class="text-xl font-bold text-green-700 mb-3">💚 [1단계] 마음 공감하기</h3>
+                <div class="bg-white p-4 rounded-lg">
+                    <p class="text-gray-800 whitespace-pre-wrap leading-relaxed">${consultingData.empathy}</p>
+                </div>
+            </div>
+            
+            <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500">
+                <h3 class="text-xl font-bold text-blue-700 mb-3">🎯 [2단계] 도움 제안하기</h3>
+                <div class="bg-white p-4 rounded-lg">
+                    <p class="text-gray-800 whitespace-pre-wrap leading-relaxed">${consultingData.suggestion}</p>
+                </div>
+            </div>
+            
+            <div class="bg-purple-50 p-6 rounded-lg border-l-4 border-purple-500">
+                <h3 class="text-xl font-bold text-purple-700 mb-3">🎁 [3단계] 격려 카드</h3>
+                <div class="bg-white p-4 rounded-lg">
+                    <div class="relative rounded-lg overflow-hidden shadow-lg" style="height: 300px; background: ${getTemplateGradient(cardData.template)};">
+                        <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+                        <div class="relative z-10 h-full flex flex-col justify-between p-6 text-white">
+                            <div class="text-center">
+                                <h4 class="font-bold mb-2 text-2xl drop-shadow-lg">To. ${cardData.to}</h4>
+                            </div>
+                            <div class="flex-1 flex flex-col justify-center">
+                                ${cardData.messages.length > 0 ? 
+                                    cardData.messages.map(msg => `<p class="text-base mb-2 drop-shadow-lg text-center">• ${msg}</p>`).join('') :
+                                    '<p class="text-base drop-shadow-lg text-center">선택된 격려 메시지가 없습니다.</p>'
+                                }
+                                ${cardData.customMessage ? `<div class="bg-white bg-opacity-25 rounded p-3 mt-3 text-base text-center backdrop-blur-sm"><p class="drop-shadow-lg">${cardData.customMessage}</p></div>` : ''}
+                            </div>
+                            <div class="text-right">
+                                <p class="text-lg font-medium drop-shadow-lg">From. ${cardData.from}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 p-3 bg-gray-100 rounded-lg">
+                        <h5 class="font-bold text-gray-700 mb-2">선택된 격려 메시지들:</h5>
+                        ${cardData.messages.length > 0 ? 
+                            `<ul class="list-disc list-inside space-y-1 text-sm text-gray-600">
+                                ${cardData.messages.map(msg => `<li>${msg}</li>`).join('')}
+                            </ul>` :
+                            '<p class="text-sm text-gray-500">선택된 메시지가 없습니다.</p>'
+                        }
+                        ${cardData.customMessage ? 
+                            `<div class="mt-3 pt-3 border-t border-gray-300">
+                                <h6 class="font-semibold text-gray-700 mb-1">나만의 특별한 메시지:</h6>
+                                <p class="text-sm text-gray-600 italic">"${cardData.customMessage}"</p>
+                            </div>` : ''
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-8 p-6 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg text-center border-2 border-green-200">
+            <h3 class="text-xl font-bold text-green-800 mb-2">🌟 컨설팅 완료 🌟</h3>
+            <p class="text-green-700 font-medium">3단계 컨설팅을 완주한 <span class="font-bold text-green-800">${currentStudent.name}</span>님, 정말 수고하셨습니다!</p>
+            <p class="text-sm text-gray-600 mt-2">따뜻한 마음으로 친구를 도와준 당신의 노력이 아름답습니다.</p>
+        </div>
+    `;
+    
+    document.getElementById('result-content').innerHTML = resultContent;
+    cardMakingScreen.classList.add('hidden');
+    resultContainer.classList.remove('hidden');
+    window.scrollTo(0, 0);
+}
+
+// 이미지로 다운로드하는 함수
+async function downloadReportAsImage() {
+    const button = document.getElementById('download-image-btn');
+    const originalText = button.innerHTML;
+    
+    try {
+        button.innerHTML = '📸 생성 중...';
+        button.disabled = true;
+        
+        const element = document.getElementById('result-container');
+        const canvas = await html2canvas(element, {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: '#f0fdf4'
+        });
+        
+        const link = document.createElement('a');
+        link.download = `컨설팅보고서_${currentStudent.name || '익명'}_${new Date().toISOString().slice(0, 10)}.png`;
+        link.href = canvas.toDataURL();
+        link.click();
+        
+        button.innerHTML = '✅ 저장 완료!';
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.disabled = false;
+        }, 2000);
+        
+    } catch (error) {
+        console.error('이미지 생성 오류:', error);
+        button.innerHTML = '❌ 오류 발생';
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.disabled = false;
+        }, 2000);
+        alert('이미지 생성 중 오류가 발생했습니다.');
+    }
+}
+
+// PDF로 다운로드하는 함수
+async function downloadReportAsPDF() {
+    const button = document.getElementById('download-pdf-btn');
+    const originalText = button.innerHTML;
+    
+    try {
+        button.innerHTML = '📄 생성 중...';
+        button.disabled = true;
+        
+        const element = document.getElementById('result-container');
+        const canvas = await html2canvas(element, {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: '#f0fdf4'
+        });
+        
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+        
+        const imgWidth = 210;
+        const pageHeight = 295;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        let heightLeft = imgHeight;
+        
+        let position = 0;
+        
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+        
+        while (heightLeft >= 0) {
+            position = heightLeft - imgHeight;
+            pdf.addPage();
+            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+        }
+        
+        pdf.save(`컨설팅보고서_${currentStudent.name || '익명'}_${new Date().toISOString().slice(0, 10)}.pdf`);
+        
+        button.innerHTML = '✅ 저장 완료!';
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.disabled = false;
+        }, 2000);
+        
+    } catch (error) {
+        console.error('PDF 생성 오류:', error);
+        button.innerHTML = '❌ 오류 발생';
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.disabled = false;
+        }, 2000);
+        alert('PDF 생성 중 오류가 발생했습니다.');
+    }
+}
+
+function resetAll() {
+    // 모든 폼 리셋
+    document.getElementById('consulting-form').reset();
+    document.getElementById('grade').value = '';
+    document.getElementById('class').value = '';
+    document.getElementById('name').value = '';
+    document.getElementById('card-to').value = '';
+    document.getElementById('card-from').value = '';
+    document.getElementById('custom-message').value = '';
+    
+    // 변수 초기화
+    selectedMessages = [];
+    currentTemplate = 'pastel';
+    currentTextColor = 'white';
+    consultingData = { empathy: '', suggestion: '' };
+    backgroundImage = null;
+    currentCase = null;
+    
+    // 배경 이미지 관련 UI 리셋
+    document.getElementById('upload-placeholder').classList.remove('hidden');
+    document.getElementById('background-preview').classList.add('hidden');
+    document.getElementById('remove-background-btn').classList.add('hidden');
+    
+    // 화면 초기화
+    document.getElementById('drawn-message').textContent = '버튼을 눌러 격려 메시지를 뽑아보세요!';
+    document.getElementById('add-message-btn').classList.add('hidden');
+    updateSelectedMessages();
+    updateCardPreview();
+    
+    // 템플릿 선택 초기화
+    document.querySelectorAll('.template-btn').forEach(btn => {
+        btn.classList.remove('border-purple-400', 'bg-purple-100');
+        btn.classList.add('border-gray-300');
+        if (btn.dataset.template === 'pastel') {
+            btn.classList.remove('border-gray-300');
+            btn.classList.add('border-purple-400', 'bg-purple-100');
+        }
+    });
+    
+    // 글자색 선택 초기화
+    document.querySelectorAll('.text-color-btn').forEach(btn => {
+        btn.classList.remove('ring-4', 'ring-purple-400');
+        if (btn.dataset.color === 'white') {
+            btn.classList.add('ring-4', 'ring-purple-400');
+        }
+    });
+}
+</script>
+</body>
+</html>
