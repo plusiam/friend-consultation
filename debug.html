@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>디버그 테스트</title>
+</head>
+<body>
+    <h1>디버그 테스트 페이지</h1>
+    <p>이 페이지는 버튼 기능을 테스트합니다.</p>
+    
+    <button id="test-btn" style="padding: 10px 20px; background: green; color: white; font-size: 16px;">
+        테스트 버튼 클릭
+    </button>
+    
+    <div id="result" style="margin-top: 20px; padding: 20px; border: 1px solid #ccc;">
+        <p>결과가 여기에 표시됩니다.</p>
+    </div>
+    
+    <script>
+        console.log('스크립트 시작됨');
+        
+        // DOMContentLoaded 이벤트
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM 로드 완료');
+            
+            const testBtn = document.getElementById('test-btn');
+            const result = document.getElementById('result');
+            
+            console.log('버튼 요소:', testBtn);
+            console.log('결과 요소:', result);
+            
+            if (testBtn) {
+                testBtn.addEventListener('click', () => {
+                    console.log('버튼 클릭됨!');
+                    result.innerHTML = '<p style="color: green; font-weight: bold;">버튼이 정상적으로 작동합니다!</p>';
+                    alert('버튼이 클릭되었습니다!');
+                });
+                console.log('이벤트 리스너 추가됨');
+            } else {
+                console.error('버튼을 찾을 수 없습니다');
+            }
+        });
+        
+        // 페이지 로드 확인
+        window.addEventListener('load', () => {
+            console.log('전체 페이지 로드 완료');
+            
+            // 원본 페이지의 요소들 확인
+            setTimeout(() => {
+                console.log('=== 원본 페이지 요소 확인 ===');
+                console.log('start-consulting-btn 존재:', !!document.getElementById('start-consulting-btn'));
+                console.log('start-screen 존재:', !!document.getElementById('start-screen'));
+                console.log('consulting-screen 존재:', !!document.getElementById('consulting-screen'));
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
