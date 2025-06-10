@@ -315,7 +315,7 @@
                             <!-- 서브 액션들 -->
                             <div class="grid grid-cols-2 gap-3">
                                 <button id="complete-card-btn" class="bg-green-500 text-white font-bold py-2 rounded-lg hover:bg-green-600 transition text-sm">
-                                    📋 컨설팅 보고서 보기
+                                    📊 전체 보고서 보기
                                 </button>
                                 <button id="back-to-consulting-btn" class="bg-gray-400 text-white font-bold py-2 rounded-lg hover:bg-gray-500 transition text-sm">
                                     ⬅️ 돌아가기
@@ -715,15 +715,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // 카드 이미지 다운로드
     document.getElementById('download-card-btn').addEventListener('click', downloadCardImage);
     
-    // 컨설팅으로 돌아가기
+    // 컨설팅으로 돌아가기 - consultingData 복원
     document.getElementById('back-to-consulting-btn').addEventListener('click', () => {
         cardMakingScreen.classList.add('hidden');
         consultingScreen.classList.remove('hidden');
+        
+        // consultingData를 다시 폼에 채우기
+        if (consultingData.empathy && consultingData.empathy !== '작성하지 않음') {
+            document.getElementById('empathy').value = consultingData.empathy;
+        }
+        if (consultingData.suggestion && consultingData.suggestion !== '작성하지 않음') {
+            document.getElementById('suggestion').value = consultingData.suggestion;
+        }
     });
     
-    // 격려 카드 완성 (컨설팅 보고서 보기) - 수정된 버전
+    // 전체 보고서 보기 (컨설팅 보고서 보기) - 수정된 버전
     document.getElementById('complete-card-btn').addEventListener('click', () => {
-        console.log('컨설팅 보고서 보기 버튼 클릭');
+        console.log('전체 보고서 보기 버튼 클릭');
         console.log('현재 고민 사례:', currentCase);
         console.log('현재 컨설팅 데이터:', consultingData);
         
@@ -754,10 +762,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('download-pdf-btn').addEventListener('click', downloadReportAsPDF);
     
     document.getElementById('new-challenge-btn').addEventListener('click', () => {
-        resetAll();
-        startScreen.classList.remove('hidden');
         resultContainer.classList.add('hidden');
+        consultingScreen.classList.remove('hidden');
         loadNewCase();
+        
+        // 폼 리셋
+        document.getElementById('empathy').value = '';
+        document.getElementById('suggestion').value = '';
+        consultingData = { empathy: '', suggestion: '' };
     });
     
     document.getElementById('restart-btn').addEventListener('click', () => {
@@ -1118,8 +1130,9 @@ function showFinalResult() {
     }
     
     // 컨설팅 데이터가 아예 없거나 모두 비어있는 경우만 제한
-    if (!consultingData || (!consultingData.empathy || consultingData.empathy === '') && 
-        (!consultingData.suggestion || consultingData.suggestion === '')) {
+    if (!consultingData || 
+        (!consultingData.empathy || consultingData.empathy === '' || consultingData.empathy === '작성하지 않음') && 
+        (!consultingData.suggestion || consultingData.suggestion === '' || consultingData.suggestion === '작성하지 않음')) {
         console.error('컨설팅 데이터가 부족합니다:', consultingData);
         alert('1단계(공감)나 2단계(제안) 중 적어도 하나는 작성해주세요.');
         return;
