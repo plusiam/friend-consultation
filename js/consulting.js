@@ -7,8 +7,11 @@ import { updateCardPreview } from './card-maker.js';
 export function initEmotionButtons() {
     const emotionButtons = document.querySelectorAll('.emotion-btn');
     const selectedEmotionsDiv = document.getElementById('selected-emotions');
+    const customEmotionInput = document.getElementById('custom-emotion-input');
+    const addCustomEmotionBtn = document.getElementById('add-custom-emotion-btn');
     let selectedEmotions = [];
     
+    // 감정 버튼 클릭 이벤트
     emotionButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             const emotion = btn.dataset.emotion;
@@ -28,15 +31,74 @@ export function initEmotionButtons() {
                 }
             }
             
-            // 선택된 감정 표시
-            if (selectedEmotions.length > 0) {
-                selectedEmotionsDiv.innerHTML = `선택한 감정: ${selectedEmotions.join(', ')}`;
-            } else {
-                selectedEmotionsDiv.innerHTML = '';
-            }
+            updateSelectedEmotions(selectedEmotions, selectedEmotionsDiv);
         });
     });
+    
+    // 커스텀 감정 추가 함수
+    const addCustomEmotion = () => {
+        const customEmotion = customEmotionInput.value.trim();
+        if (customEmotion && !selectedEmotions.includes(customEmotion)) {
+            selectedEmotions.push(customEmotion);
+            updateSelectedEmotions(selectedEmotions, selectedEmotionsDiv);
+            customEmotionInput.value = '';
+        }
+    };
+    
+    // 추가 버튼 클릭 이벤트
+    addCustomEmotionBtn.addEventListener('click', addCustomEmotion);
+    
+    // Enter 키 입력 이벤트
+    customEmotionInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addCustomEmotion();
+        }
+    });
+    
+    // 선택된 감정 목록을 state에 저장
+    state.selectedEmotions = selectedEmotions;
 }
+
+// 선택된 감정 표시 업데이트
+function updateSelectedEmotions(emotions, displayDiv) {
+    if (emotions.length > 0) {
+        displayDiv.innerHTML = `
+            <div class="flex flex-wrap gap-2 mt-2">
+                ${emotions.map((emotion, index) => `
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        ${emotion}
+                        <button type="button" class="ml-2 text-green-600 hover:text-green-800" onclick="removeEmotion(${index})">×</button>
+                    </span>
+                `).join('')}
+            </div>
+        `;
+    } else {
+        displayDiv.innerHTML = '';
+    }
+    
+    // state 업데이트
+    state.selectedEmotions = emotions;
+}
+
+// 전역 함수로 감정 제거 기능 추가
+window.removeEmotion = function(index) {
+    const selectedEmotionsDiv = document.getElementById('selected-emotions');
+    const emotions = state.selectedEmotions || [];
+    
+    // 배열에서 제거
+    const removedEmotion = emotions.splice(index, 1)[0];
+    
+    // 버튼 상태 업데이트 (미리 정의된 감정인 경우)
+    document.querySelectorAll('.emotion-btn').forEach(btn => {
+        if (btn.textContent === removedEmotion) {
+            btn.classList.remove('selected', 'bg-green-100', 'border-green-500');
+            btn.classList.add('border-gray-300');
+        }
+    });
+    
+    updateSelectedEmotions(emotions, selectedEmotionsDiv);
+};
 
 // 체크리스트 이벤트 처리
 export function initSuggestionChecklist() {
@@ -71,6 +133,8 @@ export function loadNewCase() {
         btn.classList.add('border-gray-300');
     });
     document.getElementById('selected-emotions').innerHTML = '';
+    document.getElementById('custom-emotion-input').value = '';
+    state.selectedEmotions = [];
     
     // 체크박스 초기화
     document.querySelectorAll('.suggestion-check').forEach(cb => {
@@ -114,7 +178,8 @@ export function moveToCardMaking() {
     
     state.consultingData = { 
         empathy: empathy || '작성하지 않음', 
-        suggestion: suggestion || '작성하지 않음' 
+        suggestion: suggestion || '작성하지 않음',
+        selectedEmotions: state.selectedEmotions || []
     };
     
     hideElement('consulting-screen');
@@ -149,6 +214,7 @@ export function newCaseFromCard() {
     document.getElementById('suggestion').value = '';
     state.consultingData = { empathy: '', suggestion: '' };
     state.selectedMessages = [];
+    state.selectedEmotions = [];
     updateSelectedMessages();
 }
 
