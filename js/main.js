@@ -7,7 +7,9 @@ import {
     moveToCardMaking, 
     backToConsulting,
     newCaseFromCard,
-    updateSelectedMessages 
+    updateSelectedMessages,
+    initEmotionButtons,
+    initSuggestionChecklist
 } from './consulting.js';
 import { 
     drawEncouragementMessage, 
@@ -38,6 +40,10 @@ async function initializeApp() {
         
         // 이벤트 리스너 설정
         setupEventListeners();
+        
+        // 새로운 기능 초기화
+        initEmotionButtons();
+        initSuggestionChecklist();
         
         console.log('=== 앱 초기화 완료 ===');
         
@@ -361,6 +367,18 @@ function resetAll() {
     document.getElementById('card-to').value = '';
     document.getElementById('card-from').value = '';
     document.getElementById('custom-message').value = '';
+    
+    // 감정 버튼 리셋
+    document.querySelectorAll('.emotion-btn').forEach(btn => {
+        btn.classList.remove('selected', 'bg-green-100', 'border-green-500');
+        btn.classList.add('border-gray-300');
+    });
+    document.getElementById('selected-emotions').innerHTML = '';
+    
+    // 체크박스 리셋
+    document.querySelectorAll('.suggestion-check').forEach(cb => {
+        cb.checked = false;
+    });
     
     // 상태 리셋
     resetState();
