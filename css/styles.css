@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+body { 
+    font-family: 'Noto Sans KR', sans-serif; 
+}
+
+/* 6가지 다양한 템플릿 - 3단계 그라디언트 */
+.card-template-pastel { 
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%);
+}
+.card-template-nature { 
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #d299c2 100%);
+}
+.card-template-sky { 
+    background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 50%, #a855f7 100%);
+}
+.card-template-sunset {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+}
+.card-template-ocean {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+}
+.card-template-forest {
+    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 50%, #093637 100%);
+}
+
+/* 격려 메시지 컨테이너 */
+.encouragement-messages {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* 카드 스타일 */
+.card-shadow { 
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); 
+}
+.text-shadow { 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+}
+.backdrop-blur { 
+    backdrop-filter: blur(5px); 
+}
+
+/* 동적 메시지 박스 */
+.dynamic-message-box {
+    min-height: 60px;
+    max-height: 150px;
+    transition: all 0.3s ease;
+}
+
+/* 텍스트 색상 옵션 */
+.text-color-white { color: #ffffff; }
+.text-color-cream { color: #fef7ed; }
+.text-color-light-blue { color: #dbeafe; }
+.text-color-light-pink { color: #fce7f3; }
+.text-color-light-green { color: #d1fae5; }
+
+/* 스크롤바 스타일 */
+.encouragement-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.encouragement-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.encouragement-messages::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.encouragement-messages::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* 화면 전환 애니메이션 */
+.screen-transition {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 버튼 호버 효과 */
+.btn-hover {
+    transition: all 0.3s ease;
+}
+
+.btn-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* 카드 프리뷰 반응형 */
+@media (max-width: 768px) {
+    #card-preview {
+        height: 300px !important;
+    }
+}
