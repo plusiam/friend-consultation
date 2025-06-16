@@ -3,6 +3,59 @@ import { state } from './data.js';
 import { showElement, hideElement, scrollToElement } from './utils.js';
 import { updateCardPreview } from './card-maker.js';
 
+// 감정 버튼 이벤트 처리
+export function initEmotionButtons() {
+    const emotionButtons = document.querySelectorAll('.emotion-btn');
+    const selectedEmotionsDiv = document.getElementById('selected-emotions');
+    let selectedEmotions = [];
+    
+    emotionButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const emotion = btn.dataset.emotion;
+            const emotionText = btn.textContent;
+            
+            if (btn.classList.contains('selected')) {
+                // 선택 해제
+                btn.classList.remove('selected', 'bg-green-100', 'border-green-500');
+                btn.classList.add('border-gray-300');
+                selectedEmotions = selectedEmotions.filter(e => e !== emotionText);
+            } else {
+                // 선택
+                btn.classList.add('selected', 'bg-green-100', 'border-green-500');
+                btn.classList.remove('border-gray-300');
+                if (!selectedEmotions.includes(emotionText)) {
+                    selectedEmotions.push(emotionText);
+                }
+            }
+            
+            // 선택된 감정 표시
+            if (selectedEmotions.length > 0) {
+                selectedEmotionsDiv.innerHTML = `선택한 감정: ${selectedEmotions.join(', ')}`;
+            } else {
+                selectedEmotionsDiv.innerHTML = '';
+            }
+        });
+    });
+}
+
+// 체크리스트 이벤트 처리
+export function initSuggestionChecklist() {
+    const checkboxes = document.querySelectorAll('.suggestion-check');
+    const reminder = document.getElementById('checklist-reminder');
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            
+            if (allChecked) {
+                reminder.classList.add('hidden');
+            } else {
+                reminder.classList.remove('hidden');
+            }
+        });
+    });
+}
+
 // 새로운 고민 사례 로드
 export function loadNewCase() {
     console.log('새로운 고민 사례 로드');
@@ -11,6 +64,19 @@ export function loadNewCase() {
     
     document.getElementById('case-title').textContent = state.currentCase.title;
     document.getElementById('case-content').textContent = state.currentCase.content;
+    
+    // 감정 버튼 초기화
+    document.querySelectorAll('.emotion-btn').forEach(btn => {
+        btn.classList.remove('selected', 'bg-green-100', 'border-green-500');
+        btn.classList.add('border-gray-300');
+    });
+    document.getElementById('selected-emotions').innerHTML = '';
+    
+    // 체크박스 초기화
+    document.querySelectorAll('.suggestion-check').forEach(cb => {
+        cb.checked = false;
+    });
+    document.getElementById('checklist-reminder').classList.remove('hidden');
     
     scrollToElement('case-display');
 }
@@ -33,10 +99,17 @@ export function startConsulting() {
 export function moveToCardMaking() {
     const empathy = document.getElementById('empathy').value.trim();
     const suggestion = document.getElementById('suggestion').value.trim();
+    const checkboxes = document.querySelectorAll('.suggestion-check');
+    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
     
     if (!empathy && !suggestion) {
         alert('1단계(공감)와 2단계(제안) 중 적어도 하나는 작성해주세요.');
         return;
+    }
+    
+    if (!allChecked) {
+        const confirmMove = confirm('아직 체크하지 않은 항목이 있습니다. 그래도 계속하시겠습니까?');
+        if (!confirmMove) return;
     }
     
     state.consultingData = { 
